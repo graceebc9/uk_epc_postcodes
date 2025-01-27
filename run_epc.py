@@ -40,6 +40,7 @@ def process_epc_data(base_path, results_dir, force_reprocess=False):
     # Create master progress bar
     with tqdm(total=len(authorities_to_process), desc="Processing authorities") as pbar:
         for authority_dir in authorities_to_process:
+            print('starting processing', authority_dir)    
             authority_code = authority_dir.split('domestic-')[-1]
             cert_path = os.path.join(authority_dir, 'certificates.csv')
             output_file = os.path.join(results_dir, f'{authority_code}_results.csv')
@@ -51,11 +52,12 @@ def process_epc_data(base_path, results_dir, force_reprocess=False):
                     
                     # Read and process the data
                     df = pd.read_csv(cert_path)
+                    print('read data')
                     results_df = analyse_epc(df, authority_code)
-                    
+                    print('analysed data')
                     # Save individual results file
                     results_df.to_csv(output_file)
-                    
+                    print('saved data')
                 except Exception as e:
                     tqdm.write(f"Error processing {authority_code}: {str(e)}")
                 
@@ -77,6 +79,7 @@ def process_epc_data(base_path, results_dir, force_reprocess=False):
 # Usage
 if __name__ == "__main__":
     base_path = '/Volumes/T9/2024_Data_downloads/2025_epc_database'
+    
     results_dir = '/Volumes/T9/01_2025_EPC_POSTCODES'
     # Process only unprocessed files
     process_epc_data(base_path, results_dir, force_reprocess=False)

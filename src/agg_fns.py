@@ -44,10 +44,12 @@ def generate_percentage_atr(pc, data, col):
 def process_postcode_attributes(data, postcode, cols):
     # Filter dataframe for specific postcode
     
+    # check if data not empty 
+    if data.shape[0] == 0:
+        print(f"No data found, : {postcode}")
+        return None
     
     postcode_data = data[data['POSTCODE'] == postcode].copy()
-
-
     
     if postcode_data.empty:
         print(f"No data found for postcode: {postcode}")
@@ -125,9 +127,20 @@ def analyse_epc(df, lad_code ):
     ] 
     postcodes = df.POSTCODE.unique().tolist()
 
-    latest_entries = df.sort_values('INSPECTION_DATE').groupby('UPRN').last().reset_index()
+    # check for non nulls 
+    if df.INSPECTION_DATE.isna().sum() != 0:
+        raise ValueError('INSPECTION_DATE has nulls')
+
+    if df.BUILDING_REFERENCE_NUMBER.isna().sum() != 0:
+        raise ValueError('BUILDING_REFERENCE_NUMBER has nulls')  
+
+    df['INSPECTION_DATE'] = pd.to_datetime(df['INSPECTION_DATE'])   
+    latest_entries = df.iloc[df.groupby('BUILDING_REFERENCE_NUMBER')['INSPECTION_DATE'].agg(pd.Series.idxmax)]
+
+    # checl not empty 
+    assert latest_entries.shape[0] > 0
     # check no dups on uprn
-    assert latest_entries.UPRN.duplicated().sum() == 0
+    assert latest_entries.BUILDING_REFERENCE_NUMBER.duplicated().sum() == 0
 
     results = process_multiple_postcodes(latest_entries, postcodes, cols)
     res_df = pd.DataFrame(results) 
