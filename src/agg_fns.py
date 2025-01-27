@@ -81,6 +81,13 @@ def process_postcode_attributes(data, postcode, cols):
     all_attributes = {}
 
     all_attributes['count_buildings'] = len(postcode_data)
+
+    count_uprn = len(postcode_data.UPRN.unique().tolist() )
+    count_building_ref = len(postcode_data.BUILDING_REFERENCE_NUMBER.unique().tolist() )
+    
+    all_attributes['count_uprn'] = count_uprn
+    all_attributes['count_building_ref'] = count_building_ref
+
     # Process numeric columns
     for col in numeric_cols:
         if col in cols:  # Only process if column is in requested cols
