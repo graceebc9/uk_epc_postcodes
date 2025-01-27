@@ -43,7 +43,11 @@ def generate_percentage_atr(pc, data, col):
 
 def process_postcode_attributes(data, postcode, cols):
     # Filter dataframe for specific postcode
+    
+    
     postcode_data = data[data['POSTCODE'] == postcode].copy()
+
+
     
     if postcode_data.empty:
         print(f"No data found for postcode: {postcode}")
@@ -120,7 +124,12 @@ def analyse_epc(df, lad_code ):
     'BUILT_FORM', 
     ] 
     postcodes = df.POSTCODE.unique().tolist()
-    results = process_multiple_postcodes(df, postcodes, cols)
+
+    latest_entries = df.sort_values('INSPECTION_DATE').groupby('UPRN').last().reset_index()
+    # check no dups on uprn
+    assert latest_entries.UPRN.duplicated().sum() == 0
+
+    results = process_multiple_postcodes(latest_entries, postcodes, cols)
     res_df = pd.DataFrame(results) 
     res_df['lad_code'] = lad_code   
     return res_df   
