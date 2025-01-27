@@ -78,9 +78,14 @@ def process_epc_data(base_path, results_dir, force_reprocess=False):
 
 # Usage
 if __name__ == "__main__":
-    base_path = '/Volumes/T9/2024_Data_downloads/2025_epc_database'
+    hpc=True 
     
-    results_dir = '/Volumes/T9/01_2025_EPC_POSTCODES'
+    if hpc:
+        base_path = '/rds/user/gb669/hpc-work/energy_map/data/epc_database'
+        results_dir = '/rds/user/gb669/hpc-work/energy_map/data/epc_database/postcode_results'
+    else:
+        base_path = '/Volumes/T9/2024_Data_downloads/2025_epc_database'
+        results_dir = '/Volumes/T9/01_2025_EPC_POSTCODES'
     # Process only unprocessed files
     process_epc_data(base_path, results_dir, force_reprocess=False)
     
