@@ -78,7 +78,7 @@ def process_epc_data(base_path, results_dir, force_reprocess=False):
 
 # Usage
 if __name__ == "__main__":
-    hpc=True 
+    hpc=False 
     
     if hpc:
         base_path = '/rds/user/gb669/hpc-work/energy_map/data/epc_database'
