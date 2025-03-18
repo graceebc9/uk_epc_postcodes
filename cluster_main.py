@@ -80,9 +80,9 @@ if __name__ == '__main__':
     'percentage_residuals', 
     'all_types_total_buildings',
     ]  
-    
-    neb_data_path = '' 
-    pc_path = '' 
+
+    neb_data_path = '/home/gb669/rds/hpc-work/energy_map/data/automl_models/input_data/new_final/NEBULA_englandwales_domestic_filtered.csv' 
+    pc_path = '/home/gb669/rds/hpc-work/energy_map/data/postcode_polygons/codepoint-poly_5267291' 
     model_predictions_path = '/home/gb669/rds/hpc-work/energy_map/data/automl_models/input_data/nebula_prediction_model18/predictions_all_neb.csv'      
     output_dir = '/home/gb669/rds/hpc-work/energy_map/uk_epc_postcodes/results/postcode_clustering'    
     run_name = 'neb18_full_run_v1'
